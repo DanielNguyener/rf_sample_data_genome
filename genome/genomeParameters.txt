@@ -1,0 +1,19 @@
+### /miniconda3/envs/ribo_genome/bin/STAR-avx2   --runMode genomeGenerate      --runThreadN 4   --genomeDir /work/STAR_index_chrM   --genomeFastaFiles /tmp/tmp.eWjSOe9dkM/mini.chrM.fa      --genomeSAindexNbases 10   --sjdbGTFfile /tmp/tmp.eWjSOe9dkM/mini.chrM.gtf   --sjdbOverhang 28
+### GstrandBit 32
+versionGenome	2.7.4a
+genomeType	Full
+genomeFastaFiles	/tmp/tmp.eWjSOe9dkM/mini.chrM.fa 
+genomeSAindexNbases	10
+genomeChrBinNbits	18
+genomeSAsparseD	1
+genomeTransformType	None
+genomeTransformVCF	-
+sjdbOverhang	28
+sjdbFileChrStartEnd	- 
+sjdbGTFfile	/tmp/tmp.eWjSOe9dkM/mini.chrM.gtf
+sjdbGTFchrPrefix	-
+sjdbGTFfeatureExon	exon
+sjdbGTFtagExonParentTranscript	transcript_id
+sjdbGTFtagExonParentGene	gene_id
+sjdbInsertSave	Basic
+genomeFileSizes	262144 136689
