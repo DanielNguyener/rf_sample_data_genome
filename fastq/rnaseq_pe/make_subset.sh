@@ -1,16 +1,26 @@
 #!/usr/bin/env bash
 # Regenerate SRR1039508_chrM_{1,2}.fastq.gz from the ENA original.
 #
-# Deterministic: takes the FIRST 2M read pairs (not a random sample), keeps those
-# aligning concordantly to chrM, and emits the first 50k such pairs. Rerunning
-# reproduces byte-identical FASTQ payloads.
+# Two modes:
 #
-# Requires: curl, bowtie2, python3. Run from this directory.
+#   ./make_subset.sh                    # chrM-selected (default)
+#   ./make_subset.sh --unfiltered       # plain first-50k pairs, no selection
 #
-#   ./make_subset.sh
+# chrM-selected exists only because the sample data ships a chrM-ONLY STAR index; a
+# random subset would leave ~97% of reads unmapped. If you are benchmarking or
+# analysing against a REAL human genome index, use --unfiltered: the chrM-selected
+# set is 100% mitochondrial and is a biased, unrepresentative input for a full genome.
+#
+# Deterministic either way: takes the FIRST N read pairs rather than sampling, so
+# rerunning reproduces byte-identical FASTQ payloads.
+#
+# Requires: curl, python3 (+ bowtie2 for the default chrM-selected mode).
 #
 # Takes a few minutes and ~800 MB of scratch; see README.md for provenance.
 set -euo pipefail
+
+UNFILTERED=0
+[[ "${1:-}" == "--unfiltered" ]] && UNFILTERED=1
 
 ACC=SRR1039508
 SLICE_PAIRS=2000000        # read pairs streamed from ENA
@@ -26,6 +36,19 @@ echo "==> streaming first ${SLICE_PAIRS} pairs from ENA"
 for m in 1 2; do
     curl -s "${BASE}_${m}.fastq.gz" | gzip -cd | head -n $((SLICE_PAIRS * 4)) > "$WORK/slice_${m}.fastq" || true
 done
+
+if [[ $UNFILTERED -eq 1 ]]; then
+    echo "==> emitting first ${KEEP_PAIRS} pairs unfiltered (no chrM selection)"
+    mkdir -p "$OUTDIR"
+    for m in 1 2; do
+        head -n $((KEEP_PAIRS * 4)) "$WORK/slice_${m}.fastq" > "$OUTDIR/${ACC}_all_${m}.fastq"
+    done
+    gzip -9 -f "$OUTDIR/${ACC}_all_1.fastq" "$OUTDIR/${ACC}_all_2.fastq"
+    ls -lh "$OUTDIR"
+    echo "Done. Use these with a real genome index; point example_rnaseq_pe.yaml at"
+    echo "  ${ACC}_all_{1,2}.fastq.gz  instead of  ${ACC}_chrM_{1,2}.fastq.gz"
+    exit 0
+fi
 
 echo "==> aligning to chrM"
 bowtie2-build -q "$CHRM_FA" "$WORK/chrM"

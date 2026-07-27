@@ -1,12 +1,12 @@
 ## Paired-end RNA-seq test data
 
-`SRR1039508/SRR1039508_chrM_{1,2}.fastq.gz` — 50,000 read pairs, 63 bp, human.
+`SRR1039508/SRR1039508_all_{1,2}.fastq.gz` — 50,000 read pairs, 63 bp, human.
 
 Used by `example_rnaseq_pe.yaml` in
 [`riboflow_genome`](https://github.com/DanielNguyener/riboflow_genome) to exercise the
-paired-end RNA-seq genome path. Every other file that example needs (the chrM STAR
-index, the ribo-seq passenger, the rRNA filter) is already part of the standard
-reference set — this pair is the only PE-specific input.
+paired-end RNA-seq genome path. Everything else that example needs (a genome index, the
+ribo-seq passenger, the rRNA filter) comes from the standard reference set — this pair
+is the only PE-specific input.
 
 ### Source
 
@@ -19,24 +19,17 @@ reference set — this pair is the only PE-specific input.
 
 ### How the subset was made
 
-The reads are **not** a random sample: they are pre-selected to those that align to
-**chrM**, because the genome index shipped in `../../genome` is chrM-only. A random
-subsample would leave ~97% of reads unmapped and the test nearly signal-free.
+`make_subset.sh --unfiltered` streams the first 2,000,000 read pairs of each mate from
+ENA and keeps the first 50,000 — no selection applied, so the alignment rate against a
+real genome is representative. Taking the *first* N records rather than sampling makes
+it deterministic: rerunning reproduces byte-identical FASTQ payloads.
 
-`make_subset.sh` in this directory regenerates the files from the ENA original:
-
-1. Stream the first 2,000,000 read pairs of each mate from ENA.
-2. Align them as pairs to chrM with `bowtie2 --no-mixed --no-discordant --no-unal`
-   (2.99% align concordantly — 59,747 pairs).
-3. Keep the first 50,000 concordant pairs, preserving mate order.
-
-Because step 1 takes the *first* N records rather than sampling randomly, the result
-is deterministic — rerunning the script reproduces byte-identical FASTQ payloads.
+The script's default (no flag) instead pre-selects reads that align to chrM. That mode
+existed for a retired chrM-only genome index; the resulting set is 100% mitochondrial
+and is **not** appropriate against a real genome.
 
 ### Notes for use
 
-- Essentially all of these reads survive the pipeline's rRNA/tRNA filter step (only 3
-  of 100,000 mates hit `human_rtRNA`), so the full 50k pairs reach STAR.
 - **No UMIs.** `example_rnaseq_pe.yaml` declares the first 6 bp of R1 as a pseudo-UMI
   solely to exercise the `umicollapse` PE branch; the duplicate counts it produces are
   not biologically meaningful.
