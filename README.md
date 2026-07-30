@@ -1,42 +1,30 @@
 # Sample Data for RiboFlow
 
-A complete set of sample files to test and try 
-[RiboFlow](https://github.com/ribosomeprofiling/riboflow) pipeline. 
-
 All files and references herein are coming from the human genome.
 
-The files in this repo are random subsets of the originally published data. For each sample, there is 1 million raw reads which is a fraction of the original data.
+The files in this repo are small subsets of the originally published data.
 
 ## Required and Optional Files
 
 Not all files are required by RiboFlow. 
 
-**Required File Types:**
-* Fastq files from ribosome profiling experiments
-* Annotation
-* Transcriptome Reference
-* Filter  
-
-**Optional File Types:**
-* Fastq files from RNA-Seq experiments
-* Metadata
-* Genome Reference
-* Post-Genome Reference
-
 ## Fastq
-Includes raw reads for ribosome profiling and RNA-Seq data.
-Each sample has two fastq files. 
-All fastq files are obtained by taking a subset of reads from
-the publicly available data.
-  1) Single cell ribosome profiling data with UMIs: (1cell-2, 1cell-4)  
-  [NCBI GEO accession number GSE185732](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE185732) published in  [Ozadam, Tonn, Han, et.al.](https://www.nature.com/articles/s41586-023-06228-9)  
-  This dataset contains UMIs which need to be removed prior to alignment.
-  2) Bulk ribosome profiling and RNA-Seq data: ( GSM1606107 and GSM1606108 )  
+
+  1) Ribosome profiling with UMIs, plus matched RNA-Seq: (GSM8325903, GSM8325907 ribo;
+  GSM8325891, GSM8325895 RNA-Seq). Sourced from [NCBI GEO accession number GSE269734](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE269734)
+published in [Liu et. al](https://doi.org/10.1038/s41587-025-02718-5). One `.fastq.gz` each containing preselected reads
+  aligning to the shipped reference.
+  
+ 
+  2) Bulk ribosome profiling and RNA-Seq data: (GSM1606107, GSM1606108 ribo; GSM1606099,
+  GSM1606100 RNA-Seq). Sourced from
 [NCBI GEO accession number GSE65778](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE65778)
 published in 
-[Sidrauski et. al.](https://elifesciences.org/articles/05033).  
+[Sidrauski et. al](https://elifesciences.org/articles/05033).  
 
-_Note that RNA-Seq data is optional for RiboFlow and .ribo files._  
+  3) Paired-end RNA-Seq: `fastq/rnaseq_pe/SRR1039508/` sourced from
+[NCBI GEO accession number GSE52778](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE52778)
+published in [Himes et. al](https://doi.org/10.1371/journal.pone.0099625).
 
 ## Annotation
 
@@ -46,9 +34,8 @@ The bed file contains region boundaries; CDS, 5'UTR and 3'UTR.
 
 ## Metadata
 
-Contains metadata for the ribo files in yaml format.  
-
-_Metadata is optional for RiboFlow and ribo files._  
+Contains metadata for the ribo files in yaml format — `GSM1606107.yml`, `GSM1606108.yml`
+and `ing_hek293.yaml`, covering the GSE65778 samples.
 
 ## Transcriptome Reference
 
@@ -64,25 +51,29 @@ filter sequences which are mainly ribosomal and tRNAs.
 
 ## Genome
 
-A mock Hisat2 reference in place of the entire genome. 
-For actual data analysis, users should download 
-the complete human genome such as hg38.
-Links are avaialble at
-[Hisat2 website](https://ccb.jhu.edu/software/hisat2/manual.shtml).
+`genome/star_index/` — a prebuilt **STAR** index of human **chrM**.
+```yaml
+input:
+  reference:
+    genome: ./rf_sample_data_genome/genome/star_index
+```
+See `genome/README.md`.
 
-Note that this reference has **no effect on the output ribo files** since the reads are
-mapped to the transcriptome to generate ribo files. The reads which aren't map to the 
-transcriptome are mapped to genome. 
+## Genome Source
 
-_Genomic Reference is an optional parameter for RiboFlow._
+`genome/genome_source/genome.{fa,gtf}` — the uncompressed FASTA + annotation the index
+above was built from, currently chrM. `example_build_index.yaml` feeds them to the
+pipeline's build-from-FASTA path (Mode B, `STAR --runMode genomeGenerate`), which writes
+back to `genome/star_index/`:
 
-## Post-Genome
-
-A sample bowtie2 reference file as post-genome reference.
-
-Reads that are not mapped to the genome are mapped to post-genome reference.
-
-_Similar to the case of genome, post-genome parameter is optional and it has **no effect
-on the output ribo files**._
+```yaml
+input:
+  reference:
+    genome_fasta: ./rf_sample_data_genome/genome/genome_source/genome.fa
+    gtf:          ./rf_sample_data_genome/genome/genome_source/genome.gtf
+```
 
 
+
+_Genomic Reference is an optional parameter for RiboFlow, but it is required by
+`riboflow_genome` whenever the genome path is enabled (`genome.run: true`, the default)._

@@ -1,0 +1,86 @@
+STAR version=2.7.11b
+STAR compilation time,server,dir=2025-11-14T12:06:42+0000 :/opt/conda/conda-bld/star_1763121846936/work/source
+##### Command Line:
+/miniconda3/envs/ribo_genome/bin/STAR-avx2 --runMode genomeGenerate --runThreadN 8 --genomeDir /data/genome/star_index --genomeFastaFiles /data/genome_source/genome.fa --sjdbGTFfile /data/genome_source/genome.gtf --sjdbOverhang 28 --genomeSAindexNbases 6 --outFileNamePrefix /data/genome/star_index/
+##### Initial USER parameters from Command Line:
+outFileNamePrefix                 /data/genome/star_index/
+###### All USER parameters from Command Line:
+runMode                       genomeGenerate        ~RE-DEFINED
+runThreadN                    8     ~RE-DEFINED
+genomeDir                     /data/genome/star_index     ~RE-DEFINED
+genomeFastaFiles              /data/genome_source/genome.fa        ~RE-DEFINED
+sjdbGTFfile                   /data/genome_source/genome.gtf     ~RE-DEFINED
+sjdbOverhang                  28     ~RE-DEFINED
+genomeSAindexNbases           6     ~RE-DEFINED
+outFileNamePrefix             /data/genome/star_index/     ~RE-DEFINED
+##### Finished reading parameters from all sources
+
+##### Final user re-defined parameters-----------------:
+runMode                           genomeGenerate   
+runThreadN                        8
+genomeDir                         /data/genome/star_index
+genomeFastaFiles                  /data/genome_source/genome.fa   
+genomeSAindexNbases               6
+outFileNamePrefix                 /data/genome/star_index/
+sjdbGTFfile                       /data/genome_source/genome.gtf
+sjdbOverhang                      28
+
+-------------------------------
+##### Final effective command line:
+/miniconda3/envs/ribo_genome/bin/STAR-avx2   --runMode genomeGenerate      --runThreadN 8   --genomeDir /data/genome/star_index   --genomeFastaFiles /data/genome_source/genome.fa      --genomeSAindexNbases 6   --outFileNamePrefix /data/genome/star_index/   --sjdbGTFfile /data/genome_source/genome.gtf   --sjdbOverhang 28
+----------------------------------------
+
+Number of fastq files for each mate = 1
+ParametersSolo: --soloCellFilterType CellRanger2.2 filtering parameters:  3000 0.99 10
+Finished loading and checking parameters
+--genomeDir directory exists and will be overwritten: /data/genome/star_index/
+Jul 29 21:42:48 ... starting to generate Genome files
+/data/genome_source/genome.fa : chr # 0  "chrM" chrStart: 0
+Chromosome sequence lengths: 
+chrM	16569
+Genome sequence total length = 16569
+Genome size with padding = 262144
+Jul 29 21:42:48 ..... processing annotations GTF
+Processing pGe.sjdbGTFfile=/data/genome_source/genome.gtf, found:
+		1 transcripts
+		1 exons (non-collapsed)
+		0 collapsed junctions
+Total junctions: 0
+Jul 29 21:42:48 ..... finished GTF processing
+
+Estimated genome size with padding and SJs: total=genome+SJ=57262144 = 262144 + 57000000
+GstrandBit=32
+Number of SA indices: 33136
+Jul 29 21:42:48 ... starting to sort Suffix Array. This may take a long time...
+Number of chunks: 8;   chunks size limit: 37864 bytes
+Jul 29 21:42:48 ... sorting Suffix Array chunks and saving them to disk...
+Writing 36824 bytes into /data/genome/star_index//SA_4 ; empty space on disk = 79360546570240 bytes ...Writing 37440 bytes into /data/genome/star_index//SA_2 ; empty space on disk = 79360546570240 bytes ...Writing 37728 bytes into /data/genome/star_index//SA_6 ; empty space on disk = 79360546570240 bytes ...Writing 37728 bytes into /data/genome/star_index//SA_6 ; empty space on disk = 79360546570240 bytes ... done
+ done
+Writing 37656 bytes into /data/genome/star_index//SA_1 ; empty space on disk = 79360516161536 bytes ...WritinWriting 37656 bytes into /data/genome/star_index//SA_1 ; empty space on disk = 79360516161536 bytes ...Writing 37656 bytes into /data/genome/star_index//SA_1 ; empty space on disk = 79360516161536 bytes ...Writing 37416 bytes into /data/genome/star_index//SA_5 ; empty space on disk = 79360516161536 bytes done
+g 37656 bytes into /data/genome/star_index//SA_1 ; empty space on disk = 79360516161536 bytes ...Writing 37416 bytes into /data/genome/star_index//SA_5 ; empty space on disk = 79360516161536 bytes ...Writin done
+g 37656 bytes into /data/genome/star_index//SA_1 ; empty space on disk = 79360516161536 bytes ... done
+g 37656 bytes into /data/genome/star_index//SA_1 ; empty space on disk = 79360516161536 bytes ...Writing 37416 bytes into /data/genome/star_index//SA_5 ; empty space on disk = 79360516161536 bytes ... done
+ done
+6 bytes into /data/genome/star_index//SA_1 ; empty space on disk = 79360516161536 bytes ...Writing 37416 bytes into /data/genome/star_index//SA_5 ; empty space on disk = 79360516161536 bytes ...Writing 3400 bytes into /data/genome/star_index//SA_7 ; empty space on disk = 79360526647296 bytes ... done
+ done
+ done
+ done
+ done
+ done
+Jul 29 21:42:48 ... loading chunks from disk, packing SA...
+Jul 29 21:42:48 ... finished generating suffix array
+Jul 29 21:42:48 ... generating Suffix Array index
+Jul 29 21:42:48 ... completed Suffix Array index
+Jul 29 21:42:48   Finished preparing junctions
+Jul 29 21:42:48 ..... finished inserting junctions into genome
+Jul 29 21:42:48 ... writing Genome to disk ...
+Writing 262144 bytes into /data/genome/star_index//Genome ; empty space on disk = 79360470024192 bytes ... done
+SA size in bytes: 136689
+Jul 29 21:42:48 ... writing Suffix Array to disk ...
+Writing 136689 bytes into /data/genome/star_index//SA ; empty space on disk = 79360402915328 bytes ... done
+Jul 29 21:42:48 ... writing SAindex to disk
+Writing 8 bytes into /data/genome/star_index//SAindex ; empty space on disk = 79360366215168 bytes ... done
+Writing 56 bytes into /data/genome/star_index//SAindex ; empty space on disk = 79360366215168 bytes ... done
+Writing 23891 bytes into /data/genome/star_index//SAindex ; empty space on disk = 79360366215168 bytes ... done
+Jul 29 21:42:48 ..... finished successfully
+DONE: Genome generation, EXITING

@@ -1,20 +1,18 @@
-## STAR genome index (for `DanielNguyener/riboflow_genome`)
+## Genome — prebuilt STAR index
 
-This directory replaces upstream `mock_hg38` HISAT/Kallisto-oriented mock files from
-[`ribosomeprofiling/rf_sample_data`](https://github.com/ribosomeprofiling/rf_sample_data)
-with a **`STAR`** `genomeGenerate` directory (expected keys: `SA`, `SAindex`,
-`Genome`, `chrNameLength.txt`, …).
-
-The shipped default is mitochondrial-only (**chrM**, ~16 kb) built locally via:
-
-`references_for_riboflow/genome/scripts/build_star_mini_index.sh`
-
-(`--sjdbOverhang 28`, GENCODE GRCh38 FASTA/GTF.)
-
-Point `example_local.yaml`:
+`star_index/` holds a prebuilt **STAR** index (`SA`, `SAindex`, `Genome`,
+`chrNameLength.txt`, …). It is the single genome reference every example in
+[`riboflow_genome`](https://github.com/DanielNguyener/riboflow_genome) reads:
 
 ```yaml
 input:
   reference:
-    genome: ./rf_sample_data/genome
+    genome: ./rf_sample_data_genome/genome/star_index
 ```
+
+**The path names no chromosome, deliberately.** What is committed here is **chrM**
+(16,569 bp, ~6 MB)
+
+### Generation
+`./make_index.sh` uses `./genome_source/genome.{fa,gtf}` and
+derives `--genomeSAindexNbases` from the FASTA length:

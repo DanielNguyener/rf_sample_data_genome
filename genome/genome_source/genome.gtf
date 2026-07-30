@@ -1,0 +1,3 @@
+chrM	minimal	gene	1	16569	.	+	.	gene_id "chrM_gene";
+chrM	minimal	transcript	1	16569	.	+	.	gene_id "chrM_gene"; transcript_id "chrM_tx";
+chrM	minimal	exon	1	16569	.	+	.	gene_id "chrM_gene"; transcript_id "chrM_tx"; exon_number "1";
