@@ -72,8 +72,3 @@ input:
     genome_fasta: ./rf_sample_data_genome/genome/genome_source/genome.fa
     gtf:          ./rf_sample_data_genome/genome/genome_source/genome.gtf
 ```
-
-
-
-_Genomic Reference is an optional parameter for RiboFlow, but it is required by
-`riboflow_genome` whenever the genome path is enabled (`genome.run: true`, the default)._
